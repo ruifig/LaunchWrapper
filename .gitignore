@@ -1,0 +1,9 @@
+#
+/bin/*[.exe, .dll, .pdb, .ilk, .log]
+/bin/tools/*[.exe, .dll, .pdb, .ilk, .log]
+/.vs/
+
+#
+/temp/
+/build/
+
