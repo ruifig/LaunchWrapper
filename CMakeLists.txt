@@ -37,5 +37,6 @@ include(cmake/utils.cmake)
 add_definitions(-DUNICODE -D_UNICODE)
 add_subdirectory(./temp/czmuc)
 add_subdirectory(./src)
+add_subdirectory(./utility)
 
 

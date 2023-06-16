@@ -37,18 +37,23 @@ int main(int argc, char* argv[])
 		args += std::string(" ") + argv[i];
 	}
 	args += std::string(" ") + extra_params;
+	int ret = EXIT_SUCCESS;
 
-	int ret = launcher.launch(process, args, true, [](bool fromLaunchWrapper, const std::string& str)
-		{
-			if (fromLaunchWrapper)
+
+	if (process != "none")
+	{
+		ret = launcher.launch(process, args, true, [](bool fromLaunchWrapper, const std::string& str)
 			{
-				printf("LaunchWrapper: %s", str.c_str());
-			}
-			else
-			{
-				printf("%s", str.c_str());
-			}
-		});
+				if (fromLaunchWrapper)
+				{
+					printf("LaunchWrapper: %s", str.c_str());
+				}
+				else
+				{
+					printf("%s", str.c_str());
+				}
+			});
+	}
 
 	if (pause_on_finished)
 	{
