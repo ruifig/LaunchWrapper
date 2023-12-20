@@ -3,6 +3,7 @@
 #include <crazygaze/muc/IniFile.h>
 #include <crazygaze/muc/Filesystem.h>
 #include <crazygaze/muc/StringUtils.h>
+#include <crazygaze/muc/UTF8String.h>
 #include <conio.h>
 
 int main(int argc, char* argv[])
@@ -21,6 +22,7 @@ int main(int argc, char* argv[])
 
 	std::string process = cz::trim(std::string(cfg.getValue("", "process", "")));
 	std::string extra_params = cz::trim(std::string(cfg.getValue("", "extra_params", "")));
+	std::string extra_params_before = cz::trim(std::string(cfg.getValue("", "extra_params_before", "")));
 	bool pause_on_finished = cfg.getValue("", "pause_on_finished", false);
 	if (process.empty())
 	{
@@ -29,9 +31,14 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
+
+	cz::UTF8String workingDirectory = cz::Filename(process.c_str()).getDirectory().c_str();
+	printf("LauncWrapper: Setting working directory to: %s\n", workingDirectory.c_str());
+	cz::Filesystem::getSingleton().setCWD(workingDirectory);
+
 	cz::ChildProcessLauncher launcher;
 
-	std::string args;
+	std::string args = extra_params_before + " ";
 	for (int i = 1; i < argc; i++)
 	{
 		args += std::string(" ") + argv[i];
